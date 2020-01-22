@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const User = require("../Models/User");
 
 // Pack pour coder les MDP
