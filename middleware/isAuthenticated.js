@@ -7,13 +7,13 @@ const isAuthenticated = async (req, res, next) => {
         token: req.headers.authorization.replace("Bearer ", "")
       });
       if (!user) {
-        return res.json({ error: "Non autorisé 2" });
+        return res.json({ error: "Non autorisé" });
       } else {
         req.user = user;
         next();
       }
     } else {
-      return res.json({ message: "Non autorisé 3" });
+      return res.json({ message: "Non autorisé" });
     }
   } catch (error) {
     res.json({ message: error.message });
