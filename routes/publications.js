@@ -51,11 +51,19 @@ const createFilters = req => {
 router.get("/publications/with_count", async (req, res) => {
   const filters = createFilters(req);
 
-  const search = Publications.find(filters).populate("category");
+  const search = Publications.find(filters).populate({
+    path: "creator",
+    select: "account"
+  });
+
   if (req.query.sort === "price-asc") {
     search.sort({ price: 1 });
   } else if (req.query.sort === "price-desc") {
     search.sort({ price: -1 });
+  }
+
+  if (req.query.date === "date-desc") {
+    search.sort({ date: 1 });
   }
 
   if (req.query.page) {
@@ -65,7 +73,21 @@ router.get("/publications/with_count", async (req, res) => {
   }
 
   const products = await search;
-  res.json(products);
+  res.json({ count: products.length, offers: products });
+});
+
+router.get("/publications/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const publicationsId = await Publications.findById(id);
+    // if (publicationsId) {
+    res.json(publicationsId);
+    // } else {
+    //   res.json({ message: "Pas d'annonce trouvée" });
+    // }
+  } catch (error) {
+    res.json({ error: error.message });
+  }
 });
 
 module.exports = router;
