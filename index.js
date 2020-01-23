@@ -16,6 +16,7 @@ const publicationsRoutes = require("./routes/publications");
 app.use(userRoutes);
 app.use(publicationsRoutes);
 
+
 // Gestion des routes fausses
 app.all("*", function(req, res) {
   res.json({ message: "all routes" });

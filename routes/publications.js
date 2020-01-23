@@ -5,13 +5,6 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 
 router.post("/publications", isAuthenticated, async (req, res) => {
   try {
-    if (
-      req.fields.title.length > 500 ||
-      req.fields.price > 100000 ||
-      req.fields.decription.length > 50
-    ) {
-      res.json({ message: "TROP" });
-    }
     const newPublications = new Publications({
       title: req.fields.title,
       description: req.fields.decription,
@@ -28,7 +21,7 @@ router.post("/publications", isAuthenticated, async (req, res) => {
       price: newPublications.price,
       created: Date(),
       creator: {
-        account: { username: req.user.account.username },
+        account: req.user.account,
         _id: req.user._id
       }
     });
